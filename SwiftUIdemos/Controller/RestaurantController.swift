@@ -28,8 +28,17 @@ enum RestaurantJSONKeys: String {
     case address       = "address"
     case lattitude     = "lat"
     case longitude     = "lon"
-    
+    //menu and submenu keys
+}
+
+enum MenuJSONKeys: String {
     case menus         = "menus"
+    case sections      = "menu_sections"
+    case sectionName   = "section_name"
+    //also use for menu item description
+    case sectionDescription = "description"
+    case menuItem      = "menu_items"
+    case menuItemName  = "name"
 }
 
 class RestaurantController {
