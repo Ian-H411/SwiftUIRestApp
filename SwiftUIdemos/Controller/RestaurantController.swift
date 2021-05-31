@@ -16,25 +16,21 @@ struct WebServiceKeys {
     static let url = "https://api.documenu.com/v2/restaurants/search/geo?"
 }
 
-enum RestaurantJSONKeys: String {
-    case data          = "data"
-    case name          = "restaurant_name"
-    case phone         = "restaurant_phone"
-    case website       = "restaurant_website"
-    case hours         = "hours"
-    case id            = "restaurant_id"
-    case cuisineType   = "cuisines"
-    //address and Subaddress keys
-    case address       = "address"
-    case lattitude     = "lat"
-    case longitude     = "lon"
-    
-    case menus         = "menus"
+enum MenuJSONKeys: String {
+    case menuName      = "menu_name"
+    case sections      = "menu_sections"
+    case sectionName   = "section_name"
+    //also use for menu item description
+    case sectionDescription = "description"
+    case menuItem      = "menu_items"
+    case menuItemName  = "name"
 }
 
 class RestaurantController {
 
     static let shared = RestaurantController()
+    
+    var restaurants = [Restaurant]()
     
     func getRestaurantsBasedOnGeo(lat: Double, long: Double, filterDistance: Int, completion: @escaping (Data?) -> Void) {
         let urlString = WebServiceKeys.url + WebServiceKeys.latKeyword + String(lat) + WebServiceKeys.longKeyword + String(long) + WebServiceKeys.distanceSettingKeyword + String(filterDistance)
@@ -65,7 +61,13 @@ class RestaurantController {
         } catch let error as NSError {
             print("failed to convert data:\(error.localizedDescription)")
         }
-        guard let json = jsonDecoded else { return }
+        guard let json = jsonDecoded,
+              let restaurants = json[RestaurantJSONKeys.dataKey.rawValue] as? [[String: Any]] else { return }
+        for restaurant in restaurants {
+            let newRestaurant = Restaurant(json: restaurant)
+            RestaurantController.shared.restaurants.append(newRestaurant)
+            
+        }
         
     }
 }
