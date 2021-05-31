@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Restaurant{
+class Restaurant {
     let name: String
     let restaurantType: String
     let address: String
@@ -20,4 +20,8 @@ class Restaurant{
         self.address = address
         self.images = images
     }
+    
+//    init(json: [String: Any]) {
+//
+//    }
 }
